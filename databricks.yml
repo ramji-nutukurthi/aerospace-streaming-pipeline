@@ -22,6 +22,8 @@ resources:
           - "venkatramjinutukurthi@gmail.com"
       environments:
         - environment_key: serverless_env
+          spec:
+            client: "1"
       tasks:
         - task_key: Bronze_Batch
           environment_key: serverless_env
@@ -48,6 +50,8 @@ resources:
           - "venkatramjinutukurthi@gmail.com"
       environments:
         - environment_key: serverless_env
+          spec:
+            client: "1"
       tasks:
         - task_key: Bronze_Stream
           environment_key: serverless_env
