@@ -21,6 +21,9 @@ This solution perfectly fits the problem because it bridges the gap between stre
 ## Architecture & Data Flow
 The platform implements a strict Medallion Architecture:
 
+<img width="840" height="433" alt="image" src="https://github.com/user-attachments/assets/246285f8-82fe-4265-b663-d5c58c7d5cad" />
+
+
 1. **Bronze Layer (Raw):** * **Stream:** Continuous ingestion of raw, cryptic JSON telemetry data from cloud storage.
    * **Batch:** Daily scheduled ingestion of ERP aircraft dimension files (engine IDs, safety limits).
 2. **Silver Layer (Cleansed & Quarantined):** * Transforms and casts cryptic sensor arrays into domain-specific nomenclature.
