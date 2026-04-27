@@ -56,7 +56,7 @@ def start_archiving():
             )
             print(f"Archived to S3: {s3_path}")
     except KeyboardInterrupt:
-        print("Stopping Ingester  (User interrupted)...")
+        print("Stopping Ingester (User interrupted)...")
     except Exception as e:
         print(f"\nUnexpected Pipeline Error: {str(e)}")
     finally:
