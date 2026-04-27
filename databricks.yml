@@ -20,21 +20,13 @@ resources:
       email_notifications:
         on_failure:
           - "venkatramjinutukurthi@gmail.com"
-      job_clusters:
-        - job_cluster_key: daily_cluster
-          new_cluster:
-            spark_version: "13.3.x-scala2.12"
-            node_type_id: "Standard_DS3_v2" 
-            num_workers: 1
       tasks:
         - task_key: Bronze_Batch
-          job_cluster_key: daily_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/01_bronze/02_dim_erp_data_brz.py
         - task_key: Silver_Batch
           depends_on:
             - task_key: Bronze_Batch
-          job_cluster_key: daily_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/02_silver/02_dim_erp_data_slv.py
 
@@ -50,32 +42,22 @@ resources:
       email_notifications:
         on_failure:
           - "venkatramjinutukurthi@gmail.com"
-      job_clusters:
-        - job_cluster_key: stream_cluster
-          new_cluster:
-            spark_version: "13.3.x-scala2.12"
-            node_type_id: "Standard_DS3_v2" 
-            num_workers: 2
       tasks:
         - task_key: Bronze_Stream
-          job_cluster_key: stream_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/01_bronze/01_fact_telemetry_brz.py
         - task_key: Silver_Stream
           depends_on:
             - task_key: Bronze_Stream
-          job_cluster_key: stream_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/02_silver/01_fact_telemetry_slv.py
         - task_key: Gold_Alerts
           depends_on:
             - task_key: Silver_Stream
-          job_cluster_key: stream_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/03_gold/02_alerts_stream_gld.py
         - task_key: Gold_OBT
           depends_on:
             - task_key: Silver_Stream
-          job_cluster_key: stream_cluster
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/03_gold/01_flat_table_gld.py
