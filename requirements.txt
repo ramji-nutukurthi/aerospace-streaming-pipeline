@@ -1,0 +1,14 @@
+boto3==1.42.90
+botocore==1.42.90
+confluent-kafka==2.14.0
+jmespath==1.1.0
+numpy==2.0.2
+pandas==2.3.3
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.1
+pytz==2026.1.post1
+s3transfer==0.16.0
+six==1.17.0
+typing_extensions==4.15.0
+tzdata==2026.1
+urllib3==1.26.20

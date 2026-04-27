@@ -1,0 +1,23 @@
+# --- Virtual Environments ---
+venv/
+env/
+.venv/
+
+# --- Environment Variables (Secrets) ---
+.env
+
+# --- Data & Local Caches ---
+data/
+*.csv
+*.json
+*.parquet
+
+# --- Python Cache ---
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# --- OS System Files ---
+.DS_Store
+Thumbs.db
