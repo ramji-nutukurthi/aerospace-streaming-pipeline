@@ -20,13 +20,17 @@ resources:
       email_notifications:
         on_failure:
           - "venkatramjinutukurthi@gmail.com"
+      environments:
+        - environment_key: serverless_env
       tasks:
         - task_key: Bronze_Batch
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/01_bronze/02_dim_erp_data_brz.py
         - task_key: Silver_Batch
           depends_on:
             - task_key: Bronze_Batch
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/02_silver/02_dim_erp_data_slv.py
 
@@ -42,22 +46,28 @@ resources:
       email_notifications:
         on_failure:
           - "venkatramjinutukurthi@gmail.com"
+      environments:
+        - environment_key: serverless_env
       tasks:
         - task_key: Bronze_Stream
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/01_bronze/01_fact_telemetry_brz.py
         - task_key: Silver_Stream
           depends_on:
             - task_key: Bronze_Stream
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/02_silver/01_fact_telemetry_slv.py
         - task_key: Gold_Alerts
           depends_on:
             - task_key: Silver_Stream
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/03_gold/02_alerts_stream_gld.py
         - task_key: Gold_OBT
           depends_on:
             - task_key: Silver_Stream
+          environment_key: serverless_env
           spark_python_task:
             python_file: ./databricks_lakehouse_pipelines/03_gold/01_flat_table_gld.py
