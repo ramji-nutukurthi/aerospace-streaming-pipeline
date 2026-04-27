@@ -1,4 +1,4 @@
-# ✈️ Aerospace Telemetry Lakehouse Platform
+# Aerospace Telemetry Lakehouse Platform
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Databricks](https://img.shields.io/badge/Databricks-Lakehouse-F3722C.svg)](https://databricks.com/)
@@ -9,16 +9,16 @@ A mission-critical, event-driven Lakehouse architecture designed to ingest, clea
 
 ---
 
-## 📖 Background & Problem Statement
+## Background & Problem Statement
 **The Problem:** Modern aircraft engines generate millions of telemetry pings per flight. Historically, this data was processed in massive overnight batches. If an engine's high-pressure compressor began overheating mid-flight, maintenance crews wouldn't be alerted until the next day, leading to delayed grounding decisions, potential safety risks, and catastrophic engine failure.
 
 **The Requirement:** The business requires a fault-tolerant pipeline capable of ingesting raw JSON sensor arrays continuously, marrying that stream with static ERP dimension data (fleet safety thresholds), isolating physically impossible sensor glitches without crashing the pipeline, and alerting the control room of anomalies within a strict 5-minute SLA.
 
-## 💡 The Solution & Value Proposition
+## The Solution & Value Proposition
 To resolve this, we implemented a **Real-Time Medallion Lakehouse**. 
 This solution perfectly fits the problem because it bridges the gap between streaming and batch. By utilizing 5-minute micro-batches, we achieve near real-time anomaly detection at a fraction of the compute cost of an always-on 24/7 continuous stream. The business gets immediate alerts, and data scientists get perfectly pristine historical data for predictive maintenance modeling.
 
-## 🏗️ Architecture & Data Flow
+## Architecture & Data Flow
 The platform implements a strict Medallion Architecture:
 
 1. **Bronze Layer (Raw):** * **Stream:** Continuous ingestion of raw, cryptic JSON telemetry data from cloud storage.
@@ -28,7 +28,7 @@ The platform implements a strict Medallion Architecture:
 3. **Gold Layer (Aggregated & Actionable):** * **Alerts Stream:** A continuous stream-static join comparing live telemetry against ERP safety thresholds, pushing breaches to a critical alerts table.
    * **OBT Batch:** A daily One-Big-Table (OBT) aggregation for Business Intelligence reporting.
 
-## ⚙️ Data Pipeline Mechanics: Ingestion & Transformation
+## Data Pipeline Mechanics: Ingestion & Transformation
 
 ### 1. Data Sources & Ingestion (Bronze)
 * **Telemetry Stream:** Jet engine sensors publish high-velocity JSON payloads to cloud object storage (AWS S3 / Azure ADLS). We ingest this raw data using **PySpark Structured Streaming**. To handle evolving schemas and optimize file discovery, the pipeline utilizes Databricks Auto Loader (`cloudFiles`).
@@ -44,7 +44,7 @@ Once the raw JSON lands in the Bronze table, the Silver streaming job performs s
 * **Real-Time Anomaly Detection:** The Gold streaming job performs a **Stream-Static Join**. It takes the live, cleansed telemetry stream from Silver and joins it against the static ERP thresholds table. If a live temperature exceeds the `critical_limit` defined in the ERP, the record is immediately written to `gld_critical_alerts`.
 * **Business Intelligence (OBT):** A separate daily batch job flattens the Silver telemetry and ERP dimension tables into a wide One-Big-Table (OBT), optimized for downstream BI tools like Tableau or PowerBI to query without requiring complex joins.
 
-## 🛠️ Technology Stack & Rationale
+## Technology Stack & Rationale
 * **Apache Spark (PySpark):** Chosen for its Structured Streaming capabilities, allowing us to process millions of records with exactly-once fault tolerance.
 * **Delta Lake:** Required for its ACID transactions. It allows our Gold stream to safely read from the Silver table at the exact same time our Silver stream is writing to it.
 * **Databricks Workflows & Asset Bundles (DABs):** Chosen to move the platform from "ClickOps" to "DevOps." DABs allow us to define our infrastructure as code (IaC) for safe deployments.
@@ -56,7 +56,7 @@ Once the raw JSON lands in the Bronze table, the Silver streaming job performs s
 
 ---
 
-## 🚀 Getting Started & Deployment
+## Getting Started & Deployment
 
 This project completely bypasses the UI by utilizing Databricks Asset Bundles (`databricks.yml`). 
 
@@ -83,6 +83,6 @@ Once the simulator is running, trigger the orchestrator via the CLI:
 
 `databricks bundle run telemetry_streaming_engine -t dev`
 
-## 🛡️ Observability & Monitoring
+## Observability & Monitoring
 * **Data Audits:** If a sensor malfunctions, investigate the quarantine logs at: `aerospace.silver.slv_quarantine_telemetry`.
 * **Real-Time Alerts:** Active alerts for engine overheating are published via Databricks SQL monitoring the `aerospace.gold.gld_critical_alerts` table and dispatched via webhook.
