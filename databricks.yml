@@ -5,10 +5,10 @@ targets:
   dev:
     default: true
     workspace:
-      host: https://your-dev-workspace.cloud.databricks.com
+      host: https://dbc-f0e8f544-e42b.cloud.databricks.com
   prod:
     workspace:
-      host: https://your-prod-workspace.cloud.databricks.com
+      host: https://dbc-f0e8f544-e42b.cloud.databricks.com
 
 resources:
   jobs:
